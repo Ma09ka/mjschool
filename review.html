@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Разбор ошибок — M.J.School</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #0d1117;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .bg-image-wrapper {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .bg-image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.65;
+            filter: brightness(130%) contrast(130%);
+            mix-blend-mode: multiply;
+        }
+
+        .content-box {
+            width: 100%;
+            max-width: 900px;
+            background-color: #ffffff;
+            padding: 40px;
+            border: 6px solid #f9f9f9;
+            border-radius: 20px;
+            box-shadow: 0 16px 48px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 24px;
+            line-height: 1.3;
+            font-size: 32px;
+            font-weight: 700;
+        }
+        h1 span {
+            color: #0a47ff;
+        }
+
+        .review-item {
+            border: 1px solid #eee;
+            padding: 18px;
+            margin-bottom: 16px;
+            border-radius: 12px;
+            background: #f8f9fa;
+        }
+        .review-title {
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        .review-hint {
+            color: #555;
+            line-height: 1.5;
+            margin-bottom: 14px;
+        }
+        .review-file {
+            color: #5c8af6;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+        .review-file:hover {
+            color: #4242c1;
+        }
+
+        #support-btn {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            width: 56px;
+            height: 56px;
+            background-color: #2f52ed;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            cursor: pointer;
+            z-index: 999999;
+            border: none;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+            transition: transform 0.2s, background-color 0.2s;
+            font-family: Arial, sans-serif;
+            outline: none;
+            margin: 0;
+            padding: 0;
+        }
+        #support-btn:hover {
+            transform: scale(1.15);
+            background-color: #182afb;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <!-- Фон -->
+    <div class="bg-image-wrapper">
+        <img src="school-border.jpg" alt="Школьные контуры" />
+    </div>
+    
+    <button id="support-btn" aria-label="Поддержка">?</button>
+
+    <!-- Окно поддержки (как на других страницах) -->
+    <div id="chat-overlay" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:999998;display:none;justify-content:flex-end;align-items:flex-end;opacity:0;transition:opacity 0.3s;">
+        <div style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:1000;" onclick="closeChat()"></div>
+        <div id="chat-window" style="width:340px;background:white;border:2px solid #293ceb;border-radius:18px;padding:24px;box-shadow:0 12px 36px rgba(0,0,0,0.35);position:relative;transform:translateX(24px);transition:transform 0.3s cubic-bezier(0.175,0.885,0.32,1.275);z-index:999999;">
+            <div style="font-size:20px;font-weight:700;color:#2c3e50;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center;">
+                <span>Нужна помощь?</span>
+                <button id="close-chat" onclick="closeChat()" style="background:none;border:none;color:#3a30e8;font-size:22px;cursor:pointer;padding:0;font-family:inherit;">&times;</button>
+            </div>
+            <p style="font-size:15px;color:#555;margin-bottom:18px;text-align:center;">Выбери удобный способ, я всегда на связи!</p>
+            <a href="https://t.me/malingww" style="display:block;width:100%;padding:14px;margin-bottom:12px;text-align:center;text-decoration:none;border-radius:10px;font-weight:600;color:white;transition:opacity 0.2s, transform 0.1s;cursor:pointer;box-sizing:border-box;background:#229ED9;">Написать в Telegram</a>
+            <a href="tel:+79622016840" style="display:block;width:100%;padding:14px;margin-bottom:12px;text-align:center;text-decoration:none;border-radius:10px;font-weight:600;color:white;transition:opacity 0.2s, transform 0.1s;cursor:pointer;box-sizing:border-box;background:#6f42c1;">Позвонить по телефону</a>
+            <a href="https://i.oneme.ru/i?r=BUE2sh_eZW7g8kugOdIm2Notif08wKtJuSAuSziaGmB_BS5poK-siKmb-3nthRkLlXO-lVzsyQysV3DaVqjHCp2E&expires=1785701232158" style="display:block;width:100%;padding:14px;margin-bottom:12px;text-align:center;text-decoration:none;border-radius:10px;font-weight:600;color:white;transition:opacity 0.2s, transform 0.1s;cursor:pointer;box-sizing:border-box;background:#1d05f0;">Написать в Макс (кьюар-код)</a>
+        </div>
+    </div>
+    <style>#chat-overlay.active{display:flex;opacity:1;}</style>
+
+    <script>
+        window.closeChat = function() {
+            document.getElementById('chat-overlay').classList.remove('active');
+        };
+        document.addEventListener('DOMContentLoaded', () => {
+            const supportBtn = document.getElementById('support-btn');
+            const chatOverlay = document.getElementById('chat-overlay');
+            if (supportBtn && chatOverlay) {
+                supportBtn.addEventListener('click', () => chatOverlay.classList.add('active'));
+            }
+        });
+    </script>
+     <!-- Белый блок -->
+    <div class="content-box">
+        <h1>Разбор ошибок<br><span>M.J.School</span></h1>
+
+        <!-- Разбор 1 -->
+        <div class="review-item">
+            <div class="review-title">Задание 1: Квадратное уравнение</div>
+            <div class="review-hint">
+                Типичная ошибка: путают знаки при переносе слагаемых.  
+                Подсказка: всегда переноси всё в левую часть, чтобы справа был 0 — так меньше шансов ошибиться со знаками.
+            </div>
+            <a href="review/hint1.pdf" class="review-file" target="_blank">📄 Открыть подсказку (PDF)</a>
+            или <a href="review/hint1.pdf" class="review-file" download>⬇️ Скачать подсказку</a>
+        </div>
+
+        <!-- Разбор 2 -->
+        <div class="review-item">
+            <div class="review-title">Задание 2: Дискриминант</div>
+            <div class="review-hint">
+                Типичная ошибка: забывают возвести b в квадрат или теряют минус перед 4ac.  
+                Подсказка: выпиши формулу D = b² − 4ac отдельно и подставляй числа по одному — так не пропустишь минус.
+            </div>
+            <a href="review/hint2.pdf" class="review-file" target="_blank">📄 Открыть подсказку (PDF)</a>
+            или <a href="review/hint2.pdf" class="review-file" download>⬇️ Скачать подсказку</a>
+        </div>
+
+        <!-- Разбор 3 -->
+        <div class="review-item">
+            <div class="review-title">Задание 3: Корни уравнения</div>
+            <div class="review-hint">
+                Типичная ошибка: делят только числитель или забывают про ± перед корнем.  
+                Подсказка: формула x = (−b ± √D) / 2a — это вся дробь целиком. Запиши её крупно и подставляй аккуратно.
+            </div>
+            <a href="review/hint3.png" class="review-file" target="_blank">🖼 Открыть подсказку (PNG)</a>
+            или <a href="review/hint3.png" class="review-file" download>⬇️ Скачать картинку</a>
+        </div>
+    </div>
+</body>
+</html>

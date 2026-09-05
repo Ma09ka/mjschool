@@ -1,0 +1,24 @@
+{
+  "+79991112233": {
+    "password": "school2024",
+    "name": "Алина",
+    "tolk_link": "https://7pgtba60.ktalk.ru/iyintyl9axik",
+    "hw_link": "students/alina/hw.html",
+    "video_link": "videos/lesson1.mp4",
+    "notes_link": "students/alina/notes.html",
+    "review_link": "review/hint1.pdf",
+    "schedule_link": "students/alina/schedule.html",
+    "schedule_html": "<table class='schedule-table'><tr><td class='day'>📅 Понедельник</td><td class='time'>16:00 — 17:30</td><td class='note'>Индивидуально</td></tr><tr><td class='day'>📅 Четверг</td><td class='time'>18:00 — 19:30</td><td class='note'>Индивидуально</td></tr></table>"
+  },
+  "+79994445566": {
+    "password": "school2024",
+    "name": "Маша",
+    "tolk_link": "https://7pgtba60.ktalk.ru/iyintyl9axik",
+    "hw_link": "students/masha/hw.html",
+    "video_link": "videos/lesson2.mp4",
+    "notes_link": "students/masha/notes.html",
+    "review_link": "review/hint2.pdf",
+    "schedule_link": "students/masha/schedule.html",
+    "schedule_html": "<table class='schedule-table'><tr><td class='day'>📅 Вторник</td><td class='time'>17:00 — 18:30</td><td class='note'>Индивидуально</td></tr><tr><td class='day'>📅 Пятница</td><td class='time'>15:00 — 16:30</td><td class='note'>Индивидуально</td></tr></table>"
+  }
+}

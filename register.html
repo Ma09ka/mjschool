@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Вход — M.J.School</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #0d1117;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        .bg-image-wrapper {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .bg-image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.65;
+            filter: brightness(130%) contrast(130%);
+            mix-blend-mode: multiply;
+        }
+        .content-box {
+            width: 100%;
+            max-width: 480px;
+            background-color: #ffffff;
+            padding: 40px 30px;
+            border: 6px solid #f9f9f9;
+            border-radius: 16px;
+            box-shadow: 0 12px 32px rgba(0,0,0,0.25);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+        }
+        h1 {
+            margin: 0;
+            text-align: center;
+            line-height: 1.3;
+            font-size: 34px;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+        h1 span {
+            display: inline-block;
+            font-size: 28px;
+            color: #0a47ff;
+        }
+        p.subtitle {
+            text-align: center;
+            color: #555;
+            margin-top: 15px;
+            line-height: 1.5;
+        }
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 18px;
+            border: 2px solid #ccc;
+            border-radius: 12px;
+            font-size: 17px;
+            box-sizing: border-box;
+            outline: none;
+            margin-bottom: 15px;
+        }
+        input:focus {
+            border-color: #5c8af6;
+        }
+        .start-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #5c8af6 0%, #4242c1 100%);
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 700;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 18px;
+            border-radius: 50px;
+            box-shadow: 0 8px 20px rgba(92, 102, 246, 0.4);
+            transition: all 0.3s ease;
+            text-align: center;
+            display: block;
+            border: none;
+            cursor: pointer;
+        }
+        .start-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 12px 28px rgba(100, 92, 246, 0.55);
+        }
+        #error-msg {
+            color: #e74c3c;
+            font-size: 14px;
+            text-align: center;
+            margin-top: 10px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-image-wrapper">
+        <img src="school-border.jpg" alt="Школьные контуры" />
+    </div>
+    <div class="content-box">
+        <h1>Вход в кабинет<br>
+            <span>M.J.School</span>
+        </h1>
+        <p class="subtitle">Введи номер телефона и пароль.</p>
+        <form id="login-form">
+            <input type="text" id="phone-input" name="phone" placeholder="+79991112233" required>
+            <input type="password" id="password-input" name="password" placeholder="Пароль" required>
+            <button type="submit" class="start-btn">Войти</button>
+        </form>
+        <div id="error-msg"></div>
+    </div>
+
+    <script>
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            let phoneInput = document.getElementById('phone-input').value.trim();
+            const passwordInput = document.getElementById('password-input').value.trim();
+            const errorMsg = document.getElementById('error-msg');
+            
+            errorMsg.style.display = 'none';
+
+            if (!phoneInput || !passwordInput) {
+                errorMsg.textContent = 'Пожалуйста, заполните оба поля';
+                errorMsg.style.display = 'block';
+                return;
+            }
+
+            // ЖЁСТКАЯ ОЧИСТКА: убираем всё, кроме цифр и плюса
+            phoneInput = phoneInput.replace(/[^0-9+]/g, '');
+
+            try {
+                const response = await fetch('/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phone: phoneInput, password: passwordInput })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Если это Алина
+                    if (data.key === '+79991112233' || data.key === 'alina') {
+                        window.location.href = '/alina_dashboard.html';
+                    }
+                    // Если это Маша
+                    else if (data.key === '+79994445566' || data.key === 'masha') {
+                        window.location.href = '/masha_dashboard.html';
+                    }
+                    // Если это новый ученик
+                    else {
+                        window.location.href = '/student-dashboard.html';
+                    }
+                } else {
+                    errorMsg.textContent = data.message || 'Неверный номер или пароль';
+                    errorMsg.style.display = 'block';
+                }
+            } catch (err) {
+                errorMsg.textContent = 'Ошибка соединения с сервером';
+                errorMsg.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>

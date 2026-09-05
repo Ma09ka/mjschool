@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Тест: Квадратные уравнения — M.J.School</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #0d1117;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .bg-image-wrapper {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .bg-image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.65;
+            filter: brightness(130%) contrast(130%);
+            mix-blend-mode: multiply;
+        }
+
+        .content-box {
+            width: 100%;
+            max-width: 800px;
+            background-color: #ffffff;
+            padding: 50px;
+            border: 6px solid #f9f9f9;
+            border-radius: 20px;
+            box-shadow: 0 16px 48px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            margin: 0;
+            text-align: center;
+            line-height: 1.3;
+            font-size: 32px;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+        h1 span {
+            color: #0a47ff;
+        }
+
+        .question-block {
+            margin-top: 24px;
+            padding-top: 16px;
+            border-top: 1px solid #eee;
+        }
+        .question-text {
+            font-size: 19px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 12px;
+        }
+        .answer-input {
+            padding: 10px 14px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            font-size: 17px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .feedback-area {
+            margin-top: 12px;
+            min-height: 22px;
+            font-weight: 600;
+        }
+        .correct { color: #2ecc71; }
+        .wrong { color: #e74c3c; }
+
+        #result-summary {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border: 1px dashed #ccc;
+        }
+        #show-answers-btn {
+            display: none;
+            margin-top: 14px;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #5c8af6 0%, #4242c1 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        #show-answers-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(92, 102, 246, 0.4);
+        }
+
+        .real-answer {
+            display: none;
+            font-weight: 700;
+            color: #0a47ff;
+            margin-top: 8px;
+        }
+
+        #check-btn {
+            margin-top: 28px;
+            padding: 14px 32px;
+            background: linear-gradient(135deg, #5c8af6 0%, #4242c1 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        #check-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(92, 102, 246, 0.5);
+        }
+
+        #back-btn {
+            margin-top: 20px;
+            padding: 12px 24px;
+            background: #eee;
+            color: #333;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        #back-btn:hover { background: #ddd; }
+
+        #support-btn {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            width: 56px;
+            height: 56px;
+            background-color: #2f52ed;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            cursor: pointer;
+            z-index: 999999;
+            border: none;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+            transition: transform 0.2s, background-color 0.2s;
+            font-family: Arial, sans-serif;
+            outline: none;
+            margin: 0;
+            padding: 0;
+        }
+        #support-btn:hover {
+            transform: scale(1.15);
+            background-color: #182afb;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <!-- Фон -->
+    <div class="bg-image-wrapper">
+        <img src="school-border.jpg" alt="Школьные контуры" />
+    </div>
+
+    <!-- Белый блок -->
+    <div class="content-box">
+        <h1>Тест: квадратные<br><span>уравнения</span></h1>
+
+        <form id="test-form">
+            <!-- Вопрос 1 -->
+            <div class="question-block">
+                <div class="question-text">1. Реши уравнение: x² − 5x + 6 = 0</div>
+                <input type="text" id="q1" class="answer-input" placeholder="Ответ (например, 2 и 3)">
+                <div id="f1" class="feedback-area"></div>
+                <div class="real-answer">Правильный ответ: x₁ = 2, x₂ = 3</div>
+            </div>
+
+            <!-- Вопрос 2 -->
+            <div class="question-block">
+                <div class="question-text">2. Реши уравнение: 2x² − 8 = 0</div>
+                <input type="text" id="q2" class="answer-input" placeholder="Ответ">
+                <div id="f2" class="feedback-area"></div>
+                <div class="real-answer">Правильный ответ: x₁ = −2, x₂ = 2</div>
+            </div>
+
+            <!-- Вопрос 3 -->
+            <div class="question-block">
+                <div class="question-text">3. При каком значении дискриминант равен нулю: x² + 2x + c = 0?</div>
+                <input type="text" id="q3" class="answer-input" placeholder="Число">
+                <div id="f3" class="feedback-area"></div>
+                <div class="real-answer">Правильный ответ: c = 1</div>
+            </div>
+        </form>
+
+        <button type="button" id="check-btn">🔍 Проверить</button>
+
+        <div id="result-summary"></div>
+        
+
+        <a href="homework.html" id="back-btn" style="display:inline-block; text-decoration:none; color:#333;">← Назад к домашнему заданию</a>
+    </div>
+
+    <button id="support-btn" aria-label="Поддержка">?</button>
+
+    <!-- Окно поддержки -->
+    <div id="chat-overlay" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:999998;display:none;justify-content:flex-end;align-items:flex-end;opacity:0;transition:opacity 0.3s;">
+        <div style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:1000;" onclick="closeChat()"></div>
+        <div id="chat-window" style="width:340px;background:white;border:2px solid #293ceb;border-radius:18px;padding:24px;box-shadow:0 12px 36px rgba(0,0,0,0.35);position:relative;transform:translateX(24px);transition:transform 0.3s cubic-bezier(0.175,0.885,0.32,1.275);z-index:999999;">
+            <div style="font-size:20px;font-weight:700;color:#2c3e50;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center;">
+                <span>Нужна помощь?</span>
+                <button id="close-chat" onclick="closeChat()" style="background:none;border:none;color:#3a30e8;font-size:22px;cursor:pointer;padding:0;font-family:inherit;">&times;</button>
+            </div>
+            <p style="font-size:15px;color:#555;margin-bottom:18px;text-align:center;">Выбери удобный способ, я всегда на связи!</p>
+            <a href="https://t.me/malingww" style="display:block;width:100%;padding:14px;margin-bottom:12px;text-align:center;text-decoration:none;border-radius:10px;font-weight:600;color:white;transition:opacity 0.2s, transform 0.1s;cursor:pointer;box-sizing:border-box;background:#229ED9;">Написать в Telegram</a>
+            <a href="tel:+79622016840" style="display:block;width:100%;padding:14px;margin-bottom:12px;text-align:center;text-decoration:none;border-radius:10px;font-weight:600;color:white;transition:opacity 0.2s, transform 0.1s;cursor:pointer;box-sizing:border-box;background:#6f42c1;">Позвонить по телефону</a>
+            <a href="https://i.oneme.ru/i?r=BUE2sh_eZW7g8kugOdIm2Notif08wKtJuSAuSziaGmB_BS5poK-siKmb-3nthRkLlXO-lVzsyQysV3DaVqjHCp2E&expires=1785701232158" style="display:block;width:100%;padding:14px;margin-bottom:12px;text-align:center;text-decoration:none;border-radius:10px;font-weight:600;color:white;transition:opacity 0.2s, transform 0.1s;cursor:pointer;box-sizing:border-box;background:#1d05f0;">Написать в Макс (кьюар-код)</a>
+        </div>
+    </div>
+    <style>#chat-overlay.active{display:flex;opacity:1;}</style>
+
+    <script>
+        // Правильные ответы
+        const answers = {
+            q1: ['2 и 3', '2,3', '2 3', 'x=2,x=3', 'x1=2 x2=3'],
+            q2: ['-2 и 2', '-2,2', '-2 2', '±2'],
+            q3: ['1', 'c=1']
+        };
+
+        function normalize(s) {
+            return (s || '').trim().toLowerCase().replace(/\s+/g, ' ').replace(/[^\w\s\-±]/g, '');
+        }
+
+        document.getElementById('check-btn').addEventListener('click', () => {
+            let correctCount = 0;
+
+            for (const key in answers) {
+                const input = document.getElementById(key);
+                const feedback = document.getElementById('f' + key.slice(1));
+                const val = normalize(input.value);
+
+                let isCorrect = false;
+                answers[key].forEach(opt => {
+                    if (normalize(opt) === val) isCorrect = true;
+                });
+
+                if (isCorrect) {
+                    feedback.textContent = '✅ Верно!';
+                    feedback.className = 'feedback-area correct';
+                    correctCount++;
+                } else {
+                    feedback.textContent = '❌ Ошибка. Попробуй ещё раз.';
+                    feedback.className = 'feedback-area wrong';
+                }
+            }
+
+            const summary = document.getElementById('result-summary');
+            summary.textContent = `Ты правильно ответил на ${correctCount} из 3 вопросов.`;
+
+            // Показываем кнопку «Показать ответы» только после проверки
+            document.getElementById('show-answers-btn').style.display = 'block';
+        });
+
+        document.getElementById('show-answers-btn').addEventListener('click', () => {
+            document.querySelectorAll('.real-answer').forEach(el => {
+                el.style.display = 'block';
+            });
+            document.getElementById('show-answers-btn').style.display = 'none';
+        });
+
+        // Поддержка
+        window.closeChat = function() {
+            document.getElementById('chat-overlay').classList.remove('active');
+        };
+        document.addEventListener('DOMContentLoaded', () => {
+            const supportBtn = document.getElementById('support-btn');
+            const chatOverlay = document.getElementById('chat-overlay');
+            if (supportBtn && chatOverlay) {
+                supportBtn.addEventListener('click', () => chatOverlay.classList.add('active'));
+            }
+        });
+    </script>
+</body>
+</html>

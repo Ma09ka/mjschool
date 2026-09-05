@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>M.J.School — Онлайн‑школа</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #0d1117;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .bg-image-wrapper {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .bg-image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.65;
+            filter: brightness(130%) contrast(130%);
+            mix-blend-mode: multiply;
+        }
+
+        .content-box {
+            width: 100%;
+            max-width: 800px;
+            height: 50vh;
+            background-color: #ffffff;
+            padding: 40px 30px;
+            border: 6px solid #f9f9f9;
+            border-radius: 16px;
+            box-shadow: 0 12px 32px rgba(0,0,0,0.25);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            margin: 0;
+            text-align: center;
+            line-height: 1.3;
+            font-size: 34px;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+        h1 span {
+            display: inline-block;
+            font-size: 28px;
+            color: #0a47ff;
+        }
+
+        p {
+            text-align: justify;
+            text-justify: inter-word;
+            max-width: 100%;
+            line-height: 1.7;
+            color: #555;
+            margin-top: 20px;
+        }
+
+        .start-btn {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 18px 40px;
+            background: linear-gradient(135deg, #5c8af6 0%, #4242c1 100%);
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 700;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 18px;
+            border-radius: 50px;
+            box-shadow: 0 8px 20px rgba(92, 102, 246, 0.4);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        .start-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 12px 28px rgba(100, 92, 246, 0.55);
+        }
+
+        #support-btn {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            width: 50px;
+            height: 50px;
+            background-color: #2f52ed;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            cursor: pointer;
+            z-index: 999999;
+            border: none;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s, background-color 0.2s;
+            font-family: Arial, sans-serif;
+            outline: none;
+            margin: 0;
+            padding: 0;
+        }
+        #support-btn:hover {
+            transform: scale(1.15);
+            background-color: #182afb;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        #chat-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999998;
+            display: none;
+            justify-content: flex-end;
+            align-items: flex-end;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        #chat-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        #chat-window {
+            width: 320px;
+            background: white;
+            border: 2px solid #293ceb;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            position: relative;
+            transform: translateX(20px);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 999999;
+        }
+        #chat-overlay.active #chat-window {
+            transform: translateX(0);
+        }
+
+        #chat-header {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        #close-chat {
+            background: none;
+            border: none;
+            color: #3a30e8;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 0;
+            font-family: inherit;
+        }
+
+        .contact-option {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 10px;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            color: white;
+            transition: opacity 0.2s, transform 0.1s;
+            cursor: pointer;
+            box-sizing: border-box;
+        }
+        .contact-option:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+        .btn-tg { background-color: #229ED9; }
+        .btn-MAX { background-color: #1d05f0; }
+        .btn-phone { background-color: #6f42c1; }
+
+        .close-overlay-area {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-image-wrapper">
+        <img src="school-border.jpg" alt="Школьные контуры" />
+    </div>
+
+    <div class="content-box">
+        <h1>Добро пожаловать в M.J.School!<br>
+            <span>Здесь ты достигнешь всех своих целей</span>
+        </h1>
+
+        <p>
+            Если ты новый ученик — пройди регистрацию. После этого я дам тебе персональный доступ к материалам.
+        </p>
+
+        <a href="register.html" class="start-btn">
+            Войти / Зарегистрироваться
+        </a>
+    </div>
+
+    <button id="support-btn" aria-label="Поддержка">?</button>
+
+    <div id="chat-overlay">
+        <div class="close-overlay-area" onclick="closeChat()"></div>
+        <div id="chat-window">
+            <div id="chat-header">
+                <span>Нужна помощь?</span>
+                <button id="close-chat" onclick="closeChat()">&times;</button>
+            </div>
+            <p style="font-size: 14px; color: #555; margin-bottom: 15px; text-align: center;">
+                Выбери удобный способ, я всегда на связи!
+            </p>
+            <a href="https://t.me/malingww" class="contact-option btn-tg">Написать в Telegram</a>
+            <a href="tel:+79622016840" class="contact-option btn-phone">Позвонить по телефону</a>
+            <a href="https://i.oneme.ru/i?r=BUE2sh_eZW7g8kugOdIm2Notif08wKtJuSAuSziaGmB_BS5poK-siKmb-3nthRkLlXO-lVzsyQysV3DaVqjHCp2E&expires=1785701232158" class="contact-option btn-MAX">Написать в Макс (кьюар-код)</a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const supportBtn = document.getElementById('support-btn');
+            const chatOverlay = document.getElementById('chat-overlay');
+
+            if (supportBtn && chatOverlay) {
+                supportBtn.addEventListener('click', () => {
+                    chatOverlay.classList.add('active');
+                });
+            }
+
+            window.closeChat = function() {
+                chatOverlay.classList.remove('active');
+            };
+        });
+    </script>
+</body>
+</html>
